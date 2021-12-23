@@ -1,0 +1,133 @@
+// syntax tree
+graph {
+	size="20,20"
+	read0 [label=read]
+	identifier1 [label=x]
+	if2 [label=if]
+	smaller3 [label="<"]
+	number4 [label=0]
+	identifier5 [label=x]
+	identifier6 [label=fact]
+	number7 [label=1]
+	repeat8 [label=repeat]
+	identifier9 [label=fact]
+	multiply10 [label="*"]
+	identifier11 [label=fact]
+	identifier12 [label=x]
+	identifier13 [label=x]
+	minus14 [label="-"]
+	identifier15 [label=x]
+	number16 [label=1]
+	equal17 [label="="]
+	identifier18 [label=x]
+	number19 [label=0]
+	write20 [label=write]
+	identifier21 [label=fact]
+	identifier22 [label=fact]
+	number23 [label=1]
+	read0 -- identifier1
+	read0 -- if2 [constraint=false]
+	if2 -- smaller3
+	if2 -- identifier6
+	if2 -- identifier22 [constraint=false]
+	smaller3 -- number4
+	smaller3 -- identifier5
+	identifier6 -- number7
+	identifier6 -- repeat8 [constraint=false]
+	repeat8 -- identifier9
+	repeat8 -- equal17
+	repeat8 -- write20 [constraint=false]
+	identifier9 -- multiply10
+	identifier9 -- identifier13 [constraint=false]
+	multiply10 -- identifier11
+	multiply10 -- identifier12
+	identifier13 -- minus14
+	minus14 -- identifier15
+	minus14 -- number16
+	equal17 -- identifier18
+	equal17 -- number19
+	write20 -- identifier21
+	identifier22 -- number23
+	{
+		rank=same
+		read0
+		if2
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+		if2
+		identifier22
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+		identifier6
+		repeat8
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+		repeat8
+		write20
+	}
+	{
+		rank=same
+		identifier9
+		identifier13
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+	}
+	{
+		rank=same
+	}
+}
