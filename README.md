@@ -1,7 +1,6 @@
-# boys-teams-pars
-'''
-pip install graphviz
-install windows graphviz binary from graphviz site
-py draw-tree.py
-enter path of folder
-'''
+# boys-teams-parser
+1. pip install graphviz
+2. install windows graphviz binary from graphviz site
+3. py draw-tree.py
+4. enter path of folder
+
