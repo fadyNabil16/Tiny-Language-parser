@@ -7,6 +7,7 @@ class Token:
 
 class Scanner:
     def __init__(self, text):
+        self.last_token=Token()
         self.text = text
         self.index = 0
         self.len = len(self.text)
@@ -76,11 +77,16 @@ class Scanner:
                 if self.is_space(curr_char):
                     continue
                 if self.is_symbol(curr_char):
+                    if (curr_char=='-' or curr_char=='+')and(self.last_token.tokenType != "number" and self.last_token.tokenType != "IDENTIFIER"):
+                        currToken.tokenValue += curr_char
+                        state= self.state['INNUM']
+                        continue
                     currToken = self.symbol(curr_char)
                     self.index = i + 1
                     currToken.tokenLength = self.index - temp
                     if look_ahead == True:
                         self.index = temp
+                    self.last_token=currToken
                     return currToken
                 elif curr_char == '{':
                     state = self.state['INCOMMENT']
@@ -107,6 +113,7 @@ class Scanner:
                     currToken.tokenLength = self.index - temp
                     if look_ahead == True:
                         self.index = temp
+                    self.last_token=currToken
                     return currToken
             elif state == self.state['INID']:
                 if self.is_letter(curr_char):
@@ -118,6 +125,7 @@ class Scanner:
                     currToken.tokenLength = self.index - temp
                     if look_ahead == True:
                         self.index = temp
+                    self.last_token=currToken                       
                     return currToken
             elif state == self.state['INASSIGN']:
                 if curr_char == '=':
@@ -127,6 +135,7 @@ class Scanner:
                     currToken.tokenLength = self.index - temp
                     if look_ahead is True:
                         self.index = temp
+                    self.last_token=currToken
                     return currToken
                 else:
                     self.index = i
@@ -134,6 +143,7 @@ class Scanner:
                     currToken.tokenLength = self.index - temp
                     if look_ahead == True:
                         self.index = temp
+                    self.last_token=currToken
                     return currToken
             elif state == self.state['INCOMMENT']:
                 if curr_char == '}':
@@ -144,6 +154,7 @@ class Scanner:
         currToken.tokenLength = self.index - temp
         if look_ahead == True:
             self.index = temp
+        self.last_token=currToken
         return currToken
 
     def match(self, token):
@@ -158,6 +169,15 @@ class Scanner:
         return tokens
 
 
-# my_str = "{Sample program in TINY language - Factorial}\nwrite \"Enter an integer value: \";\nread x;\nfactorial := 1;\ncount := x;\nwhile count > 1 do\nfactorial := factorial * count;\ncount := count-1;\nend\n;\nwrite \"factorial of \" , x , \" = \" , factorial;"
+# my_str = '''{ Sample program in TINY language – computes factorial}
+# 	read x; {input an integer }
+# 	if  0 < x   then{ don’t compute if x <= 0 }
+# 	fact:= 1;
+# 	repeat "
+# 	fact := fact * x;
+# 	x:= x - 1
+# 	until  x = -5;
+# 	write  fact{ output  factorial of x }
+# 	end '''
 # sca = Scanner(my_str)
 # print(sca.get_all_tokens())
