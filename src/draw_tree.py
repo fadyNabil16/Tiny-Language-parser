@@ -1,20 +1,26 @@
 from posixpath import pathsep
 from _parser import *
-from graphviz import Digraph, Graph
+from graphviz import Graph
+from pathlib import Path
 import os
+import sys, random, string
 
 
 def get_tree(path):
-    total = []
     dot = Graph(comment="syntax tree", format="png")
     dot.attr(size='20,20')
     _tree = Tree(path)
     _tree.print(_tree.getRoot().children[0])
+    tree = _tree.tree
     i = 0
     for item in tree:
         item.index = i
-        dot.node(item.nodeToken.tokenType.lower()+str(i),
-                 item.nodeToken.tokenValue.lower())
+        if item.nodeToken.tokenType.lower() in ['read', 'write', 'if', 'assign', 'repeat']:
+            dot.node(item.nodeToken.tokenType.lower()+str(i),
+                    item.string_operation, shape="rect")
+        else:
+            dot.node(item.nodeToken.tokenType.lower()+str(i),
+                item.string_operation)
         i += 1
     for item in tree:
         for _item in tree:
@@ -32,12 +38,6 @@ def get_tree(path):
                 if item.right_node == _item:
                     s.node(item.nodeToken.tokenType.lower()+str(item.index))
                     s.node(_item.nodeToken.tokenType.lower()+str(_item.index))
-
-    os.environ["path"] += os.pathsep+'D:\compilers'+'\Lib\Graphviz\\bin'
-    dot.render(directory='test-output', view=False)
-
-
-
-_tree = Tree("test.txt")
-root = _tree.getRoot()
+    pay = 'output/graph.gv'
+    dot.render(pay, view=True)
 
