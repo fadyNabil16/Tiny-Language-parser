@@ -77,20 +77,23 @@ class Tree:
         n.is_statement = True
         if token.tokenType == 'IF':
             n.is_if = True
+            n.string_operation=token.tokenType
             self.if_statement(n)
         elif token.tokenType == 'REPEAT':
             n.is_repeat = True
+            n.string_operation=token.tokenType
             self.repeat_statement(n)
         elif token.tokenType == 'READ':
             token = self.scanner.get_token(False)
             if token.tokenType == 'IDENTIFIER':
-                n.string_operation = token.tokenValue
+                n.string_operation = "READ\n"+token.tokenValue
                 #n.addChild(node(token))
         elif token.tokenType == 'WRITE':
+            n.string_operation=token.tokenType
             self.exp(n)
         elif token.tokenType == 'IDENTIFIER':
             token = self.scanner.get_token(False)
-            n.string_operation = "ASSIGN"
+            n.string_operation = "ASSIGN\n"+token.tokenValue
             if token.tokenType != "Assign":
                 pass
             self.exp(n)
@@ -101,7 +104,7 @@ class Tree:
         n=node(token)
         if token.tokenType == "IDENTIFIER" or token.tokenType == "number":
             parent.addChild(n)
-            n.string_operation=token.tokenType
+            n.string_operation=token.tokenType+"\n"+token.tokenValue
         elif token.tokenType == "OPEN_PARENTHESIS":
             self.exp(parent)
             token = self.scanner.get_token(False)
@@ -117,7 +120,7 @@ class Tree:
         if token.tokenType == "MULTIPLY" or token.tokenType == "DIVISION":
             self.scanner.match(token)
             n.nodeToken = token
-            n.string_operation = "OP"
+            n.string_operation = "OP\n"+token.tokenValue
             parent.addChild(n)
             self.trem(n)
         else:
@@ -131,7 +134,7 @@ class Tree:
         if token.tokenType == "PLUS" or token.tokenType == "MINUS":
             self.scanner.match(token)
             n.nodeToken = token
-            n.string_operation = "OP"
+            n.string_operation = "OP\n"+token.tokenValue
             parent.addChild(n)
             self.simple_exp(n)
         else:
@@ -146,7 +149,7 @@ class Tree:
             self.scanner.match(token)
             n.nodeToken = token
             parent.addChild(n)
-            n.string_operation="OP"
+            n.string_operation="OP\n"+token.tokenValue
             self.simple_exp(n)
             y = None
         else:
