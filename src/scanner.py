@@ -86,7 +86,8 @@ class Scanner:
                     currToken.tokenLength = self.index - temp
                     if look_ahead == True:
                         self.index = temp
-                    self.last_token=currToken
+                    else:
+                        self.last_token=currToken
                     return currToken
                 elif curr_char == '{':
                     state = self.state['INCOMMENT']
@@ -113,7 +114,8 @@ class Scanner:
                     currToken.tokenLength = self.index - temp
                     if look_ahead == True:
                         self.index = temp
-                    self.last_token=currToken
+                    else:
+                        self.last_token = currToken
                     return currToken
             elif state == self.state['INID']:
                 if self.is_letter(curr_char):
@@ -125,7 +127,8 @@ class Scanner:
                     currToken.tokenLength = self.index - temp
                     if look_ahead == True:
                         self.index = temp
-                    self.last_token=currToken                       
+                    else:
+                        self.last_token = currToken
                     return currToken
             elif state == self.state['INASSIGN']:
                 if curr_char == '=':
@@ -133,9 +136,10 @@ class Scanner:
                     self.index = i+1
                     currToken.tokenType = "Assign"
                     currToken.tokenLength = self.index - temp
-                    if look_ahead is True:
+                    if look_ahead == True:
                         self.index = temp
-                    self.last_token=currToken
+                    else:
+                        self.last_token = currToken
                     return currToken
                 else:
                     self.index = i
@@ -143,7 +147,8 @@ class Scanner:
                     currToken.tokenLength = self.index - temp
                     if look_ahead == True:
                         self.index = temp
-                    self.last_token=currToken
+                    else:
+                        self.last_token = currToken
                     return currToken
             elif state == self.state['INCOMMENT']:
                 if curr_char == '}':
@@ -154,7 +159,8 @@ class Scanner:
         currToken.tokenLength = self.index - temp
         if look_ahead == True:
             self.index = temp
-        self.last_token=currToken
+        else:
+            self.last_token = currToken
         return currToken
 
     def match(self, token):

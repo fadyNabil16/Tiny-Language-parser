@@ -37,6 +37,7 @@ def get_tree(path):
     dot.render(directory='test-output', view=False)
 
 
-ga = input("enter path")
-path = os.path.join(ga, os.path.dirname(__file__), "test3.txt")
-get_tree(path)
+
+_tree = Tree("test.txt")
+root = _tree.getRoot()
+

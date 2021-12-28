@@ -7,6 +7,7 @@ class node:
         self.children = []
         if token is not None:
             self.num_childern = 0
+            self.string_operation=""
             self.is_root = False
             self.is_first_statement = True
             self.is_repeat = False
@@ -17,6 +18,7 @@ class node:
             self.nodeToken = token
         else:
             self.num_childern = 0
+            self.string_operation = ""
             self.is_root = False
             self.is_first_statement = True
             self.is_repeat = False
@@ -38,8 +40,9 @@ class Tree:
     def __init__(self, path) -> None:
         self.root = None
         file = open(path, "r")
-        str = file.read()
+        str = file.read()+" "
         self.scanner = Scanner(str)
+        print(self.scanner.get_all_tokens())
         self.parse()
 
     def parse(self):
@@ -58,7 +61,7 @@ class Tree:
         n = self.statement(parent)
         if parent.is_root:
             parent.addChild(n)
-        elif (parent.is_repeat or parent.is_if) and parent.is_first_statement:
+        elif ((parent.is_repeat or parent.is_if) and parent.is_first_statement) or parent.is_else_part:
             parent.is_first_statement = False
             parent.addChild(n)
         else:
@@ -81,11 +84,13 @@ class Tree:
         elif token.tokenType == 'READ':
             token = self.scanner.get_token(False)
             if token.tokenType == 'IDENTIFIER':
-                n.addChild(node(token))
+                n.string_operation = "READ\n"+str(token.tokenValue)
+                #n.addChild(node(token))
         elif token.tokenType == 'WRITE':
             self.exp(n)
         elif token.tokenType == 'IDENTIFIER':
             token = self.scanner.get_token(False)
+            n.string_operation = "ASSIGN"
             if token.tokenType != "Assign":
                 pass
             self.exp(n)
@@ -93,8 +98,10 @@ class Tree:
 
     def factor(self, parent):
         token = self.scanner.get_token(False)
+        n=node(token)
         if token.tokenType == "IDENTIFIER" or token.tokenType == "number":
-            parent.addChild(node(token))
+            parent.addChild(n)
+            n.string_operation=token.tokenType
         elif token.tokenType == "OPEN_PARENTHESIS":
             self.exp(parent)
             token = self.scanner.get_token(False)
@@ -110,6 +117,7 @@ class Tree:
         if token.tokenType == "MULTIPLY" or token.tokenType == "DIVISION":
             self.scanner.match(token)
             n.nodeToken = token
+            n.string_operation = "OP"
             parent.addChild(n)
             self.trem(n)
         else:
@@ -123,6 +131,7 @@ class Tree:
         if token.tokenType == "PLUS" or token.tokenType == "MINUS":
             self.scanner.match(token)
             n.nodeToken = token
+            n.string_operation = "OP"
             parent.addChild(n)
             self.simple_exp(n)
         else:
@@ -137,6 +146,7 @@ class Tree:
             self.scanner.match(token)
             n.nodeToken = token
             parent.addChild(n)
+            n.string_operation="OP"
             self.simple_exp(n)
             y = None
         else:
@@ -145,6 +155,7 @@ class Tree:
 
     def repeat_statement(self, parent):
         self.statement_sequance(parent)
+        x=1
         token = self.scanner.get_token(False)
         if token.tokenType != "UNTIL":
             # ERROR UNTIL IS MISSING
@@ -163,6 +174,12 @@ class Tree:
         if token.tokenType == "ELSE":
             parent.is_else_part = True
             self.statement_sequance(parent)
+            token = self.scanner.get_token(False)
+            ####################################################################
+            if token.tokenType != "END":
+                # end of else is missing
+                pass
+            #####################################################################
         elif token.tokenType != "END":
             # error code end missing
             pass
