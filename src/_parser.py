@@ -38,6 +38,7 @@ class node:
 
 class Tree:
     def __init__(self, path) -> None:
+        self.tree = []
         self.root = None
         file = open(path, "r")
         str = file.read()+" "
@@ -188,8 +189,7 @@ class Tree:
             pass
 
     def print(self, root):
-        global tree
-        tree.append(root)
+        self.tree.append(root)
         if len(root.children) > 0:
             for i in root.children:
                 self.print(i)
@@ -200,6 +200,3 @@ class Tree:
                 self.print(root.right_node)
             else:
                 return
-
-
-tree = []
