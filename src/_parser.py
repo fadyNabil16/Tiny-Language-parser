@@ -84,7 +84,7 @@ class Tree:
         elif token.tokenType == 'READ':
             token = self.scanner.get_token(False)
             if token.tokenType == 'IDENTIFIER':
-                n.string_operation = "READ\n"+str(token.tokenValue)
+                n.string_operation = token.tokenValue
                 #n.addChild(node(token))
         elif token.tokenType == 'WRITE':
             self.exp(n)
