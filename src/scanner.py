@@ -164,7 +164,7 @@ class Scanner:
         return currToken
 
     def match(self, token):
-        self.index += token.tokenLength
+        self.get_token(False)
 
     def get_all_tokens(self):
         tokens = ""
